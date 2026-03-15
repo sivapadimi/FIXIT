@@ -1,0 +1,71 @@
+{
+  "problems": [
+    {
+      "problem_id": 1,
+      "title": "Count Set Bits - Fix Bitwise Bug",
+      "description": "Fix the bitwise operator bug in the set bits counting algorithm",
+      "language": "python",
+      "total_points": 20,
+      "bugs": [
+        {
+          "bug_id": "bitwise_or_bug",
+          "buggy_line": "if (n | 1) == 1:",
+          "expected_fix": "if (n & 1) == 1:",
+          "line_number": 4,
+          "description": "Change OR (|) to AND (&) operator",
+          "points": 10
+        },
+        {
+          "bug_id": "shift_bug",
+          "buggy_line": "n = n >> 2",
+          "expected_fix": "n = n >> 1",
+          "line_number": 6,
+          "description": "Fix right shift from 2 to 1",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "problem_id": 2,
+      "title": "Array Bounds - Fix Loop Bug",
+      "description": "Fix the array bounds issue in the loop",
+      "language": "python",
+      "total_points": 15,
+      "bugs": [
+        {
+          "bug_id": "loop_bounds_bug",
+          "buggy_line": "for i in range(len(arr) + 1):",
+          "expected_fix": "for i in range(len(arr)):",
+          "line_number": 3,
+          "description": "Remove +1 from loop bounds",
+          "points": 15
+        }
+      ]
+    },
+    {
+      "problem_id": 3,
+      "title": "Memory Leak - Fix Node Cleanup",
+      "description": "Fix the memory leak by properly cleaning up linked list nodes",
+      "language": "java",
+      "total_points": 25,
+      "bugs": [
+        {
+          "bug_id": "memory_leak_bug",
+          "buggy_line": "current.next = null;",
+          "expected_fix": "current.next = null; prev = null;",
+          "line_number": 8,
+          "description": "Add proper cleanup for previous node reference",
+          "points": 15
+        },
+        {
+          "bug_id": "loop_condition_bug",
+          "buggy_line": "while (current != null)",
+          "expected_fix": "while (current != null && current.next != null)",
+          "line_number": 5,
+          "description": "Fix loop condition to prevent null pointer",
+          "points": 10
+        }
+      ]
+    }
+  ]
+}

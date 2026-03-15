@@ -1,0 +1,88 @@
+{
+  "problem": "Count Set Bits - Debugging Challenge",
+  "description": "Given an integer N, count the number of set bits (1s) in its binary representation.",
+  "starter_code_bugs": [
+    "Wrong bitwise operator (using | instead of &)",
+    "Wrong increment method (using count = count + 1 instead of count += 1)",
+    "Input reading issue (removed hardcoded value)"
+  ],
+  "test_cases": [
+    {
+      "id": 1,
+      "input": "1",
+      "expected_output": "1",
+      "binary": "1",
+      "explanation": "Number 1 has binary representation '1' with 1 set bit"
+    },
+    {
+      "id": 2,
+      "input": "2",
+      "expected_output": "1",
+      "binary": "10",
+      "explanation": "Number 2 has binary representation '10' with 1 set bit"
+    },
+    {
+      "id": 3,
+      "input": "3",
+      "expected_output": "2",
+      "binary": "11",
+      "explanation": "Number 3 has binary representation '11' with 2 set bits"
+    },
+    {
+      "id": 4,
+      "input": "4",
+      "expected_output": "1",
+      "binary": "100",
+      "explanation": "Number 4 has binary representation '100' with 1 set bit"
+    },
+    {
+      "id": 5,
+      "input": "5",
+      "expected_output": "2",
+      "binary": "101",
+      "explanation": "Number 5 has binary representation '101' with 2 set bits"
+    },
+    {
+      "id": 6,
+      "input": "6",
+      "expected_output": "2",
+      "binary": "110",
+      "explanation": "Number 6 has binary representation '110' with 2 set bits"
+    },
+    {
+      "id": 7,
+      "input": "7",
+      "expected_output": "3",
+      "binary": "111",
+      "explanation": "Number 7 has binary representation '111' with 3 set bits"
+    },
+    {
+      "id": 8,
+      "input": "8",
+      "expected_output": "1",
+      "binary": "1000",
+      "explanation": "Number 8 has binary representation '1000' with 1 set bit"
+    },
+    {
+      "id": 9,
+      "input": "9",
+      "expected_output": "2",
+      "binary": "1001",
+      "explanation": "Number 9 has binary representation '1001' with 2 set bits"
+    },
+    {
+      "id": 10,
+      "input": "10",
+      "expected_output": "2",
+      "binary": "1010",
+      "explanation": "Number 10 has binary representation '1010' with 2 set bits"
+    }
+  ],
+  "validation": {
+    "input_format": "single_integer",
+    "output_format": "single_integer",
+    "comparison": "exact_match",
+    "time_limit": "1s",
+    "memory_limit": "256MB"
+  }
+}

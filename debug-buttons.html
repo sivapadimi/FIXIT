@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixIt Button Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .btn { padding: 10px 20px; margin: 5px; border: none; cursor: pointer; }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-secondary { background: #6b7280; color: white; }
+        .page { display: none; padding: 20px; border: 1px solid #ccc; margin: 10px 0; }
+        .page.active { display: block; }
+        .nav-link { padding: 10px; margin: 5px; cursor: pointer; background: #e5e7eb; }
+        .nav-link.active { background: #3b82f6; color: white; }
+    </style>
+</head>
+<body>
+    <h1>FixIt Button Debug Test</h1>
+    
+    <!-- Navigation -->
+    <div class="nav-links">
+        <span class="nav-link active" onclick="showPage('dashboard')">Dashboard</span>
+        <span class="nav-link" onclick="showPage('problems')">Problems</span>
+        <span class="nav-link" onclick="showPage('leaderboard')">Leaderboard</span>
+        <button class="btn btn-primary" onclick="showLogin()">Login</button>
+    </div>
+
+    <!-- Pages -->
+    <div id="dashboard-page" class="page active">
+        <h2>Dashboard</h2>
+        <button class="btn btn-primary" onclick="showPage('problems')">Start Debugging</button>
+        <p>Dashboard content here...</p>
+    </div>
+
+    <div id="problems-page" class="page">
+        <h2>Problems</h2>
+        <button class="btn btn-secondary" onclick="showPage('dashboard')">Back to Dashboard</button>
+        <p>Problems content here...</p>
+    </div>
+
+    <div id="leaderboard-page" class="page">
+        <h2>Leaderboard</h2>
+        <button class="btn btn-secondary" onclick="showPage('dashboard')">Back to Dashboard</button>
+        <p>Leaderboard content here...</p>
+    </div>
+
+    <div id="login-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc;">
+        <h3>Login</h3>
+        <input type="text" placeholder="Username" id="username">
+        <input type="password" placeholder="Password" id="password">
+        <button class="btn btn-primary" onclick="login()">Login</button>
+        <button class="btn btn-secondary" onclick="hideLogin()">Cancel</button>
+    </div>
+
+    <script>
+        console.log("JavaScript loaded successfully!");
+
+        // Page Navigation Function
+        function showPage(page) {
+            console.log("showPage called with:", page);
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(`${page}-page`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                targetPage.style.display = 'block';
+                console.log("Page shown:", page);
+            } else {
+                console.error("Page not found:", page);
+            }
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(l => {
+                if (l.textContent.toLowerCase().includes(page)) {
+                    l.classList.add('active');
+                }
+            });
+        }
+
+        // Login Functions
+        function showLogin() {
+            console.log("showLogin called");
+            document.getElementById('login-modal').style.display = 'block';
+        }
+
+        function hideLogin() {
+            console.log("hideLogin called");
+            document.getElementById('login-modal').style.display = 'none';
+        }
+
+        function login() {
+            console.log("login called");
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                alert(`Login successful for ${username}!`);
+                hideLogin();
+                showPage('dashboard');
+            } else {
+                alert('Please enter username and password');
+            }
+        }
+
+        // Test function
+        function testButtons() {
+            console.log("Testing all buttons...");
+            
+            // Test page navigation
+            showPage('dashboard');
+            setTimeout(() => showPage('problems'), 1000);
+            setTimeout(() => showPage('leaderboard'), 2000);
+            setTimeout(() => showPage('dashboard'), 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded");
+            showPage('dashboard');
+        });
+
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+        });
+    </script>
+</body>
+</html>

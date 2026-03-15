@@ -1,0 +1,216 @@
+{
+  "problem": "Count Set Bits",
+  "description": "Given an integer N, count the number of set bits (1s) in its binary representation.",
+  "test_cases": [
+    {
+      "id": 1,
+      "input": "0",
+      "binary": "0",
+      "expected_output": "0",
+      "difficulty": "edge_case",
+      "explanation": "Zero has no set bits"
+    },
+    {
+      "id": 2,
+      "input": "1",
+      "binary": "1",
+      "expected_output": "1",
+      "difficulty": "edge_case",
+      "explanation": "Smallest positive integer with one set bit"
+    },
+    {
+      "id": 3,
+      "input": "2",
+      "binary": "10",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^1) has exactly one set bit"
+    },
+    {
+      "id": 4,
+      "input": "3",
+      "binary": "11",
+      "expected_output": "2",
+      "difficulty": "basic",
+      "explanation": "Small number with multiple set bits"
+    },
+    {
+      "id": 5,
+      "input": "4",
+      "binary": "100",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^2) has exactly one set bit"
+    },
+    {
+      "id": 6,
+      "input": "7",
+      "binary": "111",
+      "expected_output": "3",
+      "difficulty": "basic",
+      "explanation": "All bits are set in 3-bit representation"
+    },
+    {
+      "id": 7,
+      "input": "8",
+      "binary": "1000",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^3) has exactly one set bit"
+    },
+    {
+      "id": 8,
+      "input": "15",
+      "binary": "1111",
+      "expected_output": "4",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 4-bit representation (2^4 - 1)"
+    },
+    {
+      "id": 9,
+      "input": "16",
+      "binary": "10000",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^4) has exactly one set bit"
+    },
+    {
+      "id": 10,
+      "input": "31",
+      "binary": "11111",
+      "expected_output": "5",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 5-bit representation (2^5 - 1)"
+    },
+    {
+      "id": 11,
+      "input": "32",
+      "binary": "100000",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^5) has exactly one set bit"
+    },
+    {
+      "id": 12,
+      "input": "63",
+      "binary": "111111",
+      "expected_output": "6",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 6-bit representation (2^6 - 1)"
+    },
+    {
+      "id": 13,
+      "input": "64",
+      "binary": "1000000",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^6) has exactly one set bit"
+    },
+    {
+      "id": 14,
+      "input": "127",
+      "binary": "1111111",
+      "expected_output": "7",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 7-bit representation (2^7 - 1)"
+    },
+    {
+      "id": 15,
+      "input": "255",
+      "binary": "11111111",
+      "expected_output": "8",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 8-bit representation (2^8 - 1)"
+    },
+    {
+      "id": 16,
+      "input": "1023",
+      "binary": "1111111111",
+      "expected_output": "10",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 10-bit representation (2^10 - 1)"
+    },
+    {
+      "id": 17,
+      "input": "1024",
+      "binary": "10000000000",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^10) has exactly one set bit"
+    },
+    {
+      "id": 18,
+      "input": "12345",
+      "binary": "11000000111001",
+      "expected_output": "6",
+      "difficulty": "medium",
+      "explanation": "Random medium-sized number"
+    },
+    {
+      "id": 19,
+      "input": "65535",
+      "binary": "1111111111111111",
+      "expected_output": "16",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 16-bit representation (2^16 - 1)"
+    },
+    {
+      "id": 20,
+      "input": "65536",
+      "binary": "10000000000000000",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^16) has exactly one set bit"
+    },
+    {
+      "id": 21,
+      "input": "100000",
+      "binary": "11000011010100000",
+      "expected_output": "5",
+      "difficulty": "large",
+      "explanation": "Large number with mixed bits"
+    },
+    {
+      "id": 22,
+      "input": "1048575",
+      "binary": "11111111111111111111",
+      "expected_output": "20",
+      "difficulty": "all_ones",
+      "explanation": "All bits are set in 20-bit representation (2^20 - 1)"
+    },
+    {
+      "id": 23,
+      "input": "1048576",
+      "binary": "100000000000000000000",
+      "expected_output": "1",
+      "difficulty": "power_of_2",
+      "explanation": "Power of 2 (2^20) has exactly one set bit"
+    },
+    {
+      "id": 24,
+      "input": "2147483647",
+      "binary": "1111111111111111111111111111111",
+      "expected_output": "31",
+      "difficulty": "edge_case",
+      "explanation": "Maximum 32-bit signed integer (2^31 - 1)"
+    },
+    {
+      "id": 25,
+      "input": "2147483648",
+      "binary": "10000000000000000000000000000000",
+      "expected_output": "1",
+      "difficulty": "edge_case",
+      "explanation": "First 33-bit number (2^31)"
+    }
+  ],
+  "validation_rules": {
+    "input_format": "single_integer",
+    "output_format": "single_integer",
+    "constraints": {
+      "min_value": 0,
+      "max_value": 2147483648,
+      "input_type": "non_negative_integer"
+    },
+    "comparison": "exact_integer_match"
+  }
+}

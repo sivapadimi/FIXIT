@@ -1,0 +1,57 @@
+{
+  "name": "fixit-backend",
+  "version": "1.0.0",
+  "description": "Backend API for FixIt debugging platform",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "lan:start": "node src/lan-server.js",
+    "lan:dev": "nodemon src/lan-server.js",
+    "lan:deploy": "cd .. && npm run lan:setup && cd backend && npm run lan:start",
+    "build": "echo 'No build step required for Node.js'",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "redis": "^4.6.11",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "socket.io": "^4.7.4",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.3.1",
+    "winston": "^3.11.0",
+    "compression": "^1.7.4",
+    "express-mongo-sanitize": "^2.2.0",
+    "hpp": "^0.2.3",
+    "xss": "^1.0.14",
+    "uuid": "^9.0.1",
+    "child_process": "^1.0.2",
+    "fs-extra": "^11.2.0",
+    "moment": "^2.29.4",
+    "lodash": "^4.17.21",
+    "sqlite3": "^5.1.6",
+    "sqlite": "^5.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "@types/jest": "^29.5.11"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

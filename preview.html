@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="description" content="FixIt - Debugging competition platform for technical events" />
+    <title>FixIt - Debugging Competition Platform</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+              'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+              sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #111827;
+            color: #f9fafb;
+            line-height: 1.6;
+        }
+        
+        code {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Segoe UI Mono',
+              'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro', 'Fira Mono',
+              'Droid Sans Mono', 'Courier New', monospace;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: #374151;
+            color: #e5e7eb;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
+        }
+        
+        .card {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .card:hover {
+            border-color: #4b5563;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-easy {
+            background: #065f46;
+            color: #6ee7b7;
+        }
+        
+        .badge-medium {
+            background: #92400e;
+            color: #fbbf24;
+        }
+        
+        .badge-hard {
+            background: #991b1b;
+            color: #f87171;
+        }
+        
+        .badge-primary {
+            background: #1e3a8a;
+            color: #93c5fd;
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+        
+        .nav-link.active {
+            color: #3b82f6;
+        }
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%);
+            border-radius: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #f9fafb;
+        }
+        
+        .feature-description {
+            color: #9ca3af;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: #1f2937;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #374151;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+        
+        .code-editor {
+            background: #1e1e1e;
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        
+        .editor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .editor-title {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+        
+        .editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+        }
+        
+        .test-case {
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .test-case-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .test-case-title {
+            font-weight: 600;
+            color: #f9fafb;
+        }
+        
+        .test-case-status {
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-passed {
+            background: #065f46;
+            color: #6ee7b7;
+        }
+        
+        .status-failed {
+            background: #991b1b;
+            color: #f87171;
+        }
+        
+        .status-pending {
+            background: #451a03;
+            color: #fbbf24;
+        }
+        
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .leaderboard-table th {
+            background: #374151;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: #f9fafb;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        
+        .leaderboard-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .leaderboard-table tr:hover {
+            background: #374151;
+        }
+        
+        .rank-1 {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #78350f;
+        }
+        
+        .rank-2 {
+            background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+            color: #374151;
+        }
+        
+        .rank-3 {
+            background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+            color: #7c2d12;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="container">
+        <div class="nav">
+            <div class="nav-logo">FixIt</div>
+            <div class="nav-links">
+                <a href="#dashboard" class="nav-link active">Dashboard</a>
+                <a href="#problems" class="nav-link">Problems</a>
+                <a href="#leaderboard" class="nav-link">Leaderboard</a>
+                <a href="#profile" class="nav-link">Profile</a>
+                <button class="btn btn-primary">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container">
+        <div class="hero">
+            <h1 class="gradient-text">FixIt</h1>
+            <p>Debugging Competition Platform for Technical Events</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1rem;">
+                    <i class="fas fa-play" style="margin-right: 0.5rem;"></i>
+                    Start Debugging
+                </button>
+                <button class="btn btn-secondary" style="padding: 0.75rem 2rem; font-size: 1rem;">
+                    <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container">
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bug"></i>
+                </div>
+                <h3 class="feature-title">Debug Bugs</h3>
+                <p class="feature-description">Find and fix bugs in real code across multiple programming languages</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="feature-title">Multi-Language Support</h3>
+                <p class="feature-description">Support for Python, Java, and C++ with syntax highlighting</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="feature-title">Compete & Win</h3>
+                <p class="feature-description">Real-time leaderboard with scoring and time-based bonuses</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Stats -->
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem; color: #f9fafb;">Dashboard Overview</h2>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Problems Solved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">45</div>
+                <div class="stat-label">Total Submissions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">73%</div>
+                <div class="stat-label">Accuracy Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1.2s</div>
+                <div class="stat-label">Avg Execution Time</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problems Section -->
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem; color: #f9fafb;">Recent Problems</h2>
+        <div style="display: grid; gap: 1rem;">
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: #f9fafb; margin-bottom: 0.5rem;">
+                                Array Index Out of Bounds
+                            </h3>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <span class="badge badge-easy">Easy</span>
+                                <span class="badge badge-primary">Level 1</span>
+                                <span style="color: #9ca3af; font-size: 0.875rem;">Arrays</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #3b82f6;">100</div>
+                            <div style="font-size: 0.875rem; color: #9ca3af;">points</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: #9ca3af; margin-bottom: 1rem;">
+                        Fix the array access bug that causes runtime errors when accessing elements beyond array bounds.
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 0.875rem; color: #9ca3af;">
+                            <i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.5rem;"></i>
+                            85% success rate • 234 submissions
+                        </div>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-play" style="margin-right: 0.5rem;"></i>
+                            Solve Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; color: #f9fafb; margin-bottom: 0.5rem;">
+                                Memory Leak in Linked List
+                            </h3>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <span class="badge badge-medium">Medium</span>
+                                <span class="badge badge-primary">Level 2</span>
+                                <span style="color: #9ca3af; font-size: 0.875rem;">Data Structures</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #3b82f6;">250</div>
+                            <div style="font-size: 0.875rem; color: #9ca3af;">points</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: #9ca3af; margin-bottom: 1rem;">
+                        Identify and fix the memory leak in the linked list implementation that causes memory exhaustion.
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 0.875rem; color: #9ca3af;">
+                            <i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.5rem;"></i>
+                            62% success rate • 156 submissions
+                        </div>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-play" style="margin-right: 0.5rem;"></i>
+                            Solve Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Editor Preview -->
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem; color: #f9fafb;">Code Editor</h2>
+        <div class="card">
+            <div class="editor-header">
+                <div class="editor-title">
+                    <i class="fab fa-python" style="margin-right: 0.5rem;"></i>
+                    solution.py
+                </div>
+                <div class="editor-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-play" style="margin-right: 0.5rem;"></i>
+                        Run
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i>
+                        Submit
+                    </button>
+                </div>
+            </div>
+            <div class="code-editor">
+<pre style="margin: 0; color: #d4d4d4;"><span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">find_max</span>(<span style="color: #9cdcfe;">arr</span>):
+    <span style="color: #569cd6;">def</span> <span style="color: #dcdcaa;">find_max</span>(<span style="color: #9cdcfe;">arr</span>):
+        <span style="color: #9cdcfe;">max_val</span> <span style="color: #d4d4d4;">=</span> <span style="color: #9cdcfe;">arr</span>[<span style="color: #b5cea8;">0</span>]
+        <span style="color: #569cd6;">for</span> <span style="color: #9cdcfe;">i</span> <span style="color: #569cd6;">in</span> <span style="color: #dcdcaa;">range</span>(<span style="color: #569cd6;">len</span>(<span style="color: #9cdcfe;">arr</span>) <span style="color: #d4d4d4;">+</span> <span style="color: #b5cea8;">1</span>):  <span style="color: #608b4e;"># Bug: should be len(arr)</span>
+            <span style="color: #569cd6;">if</span> <span style="color: #9cdcfe;">arr</span>[<span style="color: #9cdcfe;">i</span>] <span style="color: #d4d4d4;">&gt;</span> <span style="color: #9cdcfe;">max_val</span>:
+                <span style="color: #9cdcfe;">max_val</span> <span style="color: #d4d4d4;">=</span> <span style="color: #9cdcfe;">arr</span>[<span style="color: #9cdcfe;">i</span>]
+        <span style="color: #569cd6;">return</span> <span style="color: #9cdcfe;">max_val</span>
+
+<span style="color: #9cdcfe;">test_array</span> <span style="color: #d4d4d4;">=</span> [<span style="color: #b5cea8;">1</span>, <span style="color: #b5cea8;">5</span>, <span style="color: #b5cea8;">3</span>, <span style="color: #b5cea8;">9</span>, <span style="color: #b5cea8;">2</span>]
+<span style="color: #569cd6;">print</span>(<span style="color: #dcdcaa;">find_max</span>(<span style="color: #9cdcfe;">test_array</span>))</pre>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #f9fafb;">Test Results</h3>
+        <div style="display: grid; gap: 1rem;">
+            <div class="test-case">
+                <div class="test-case-header">
+                    <span class="test-case-title">Test Case 1</span>
+                    <span class="test-case-status status-passed">
+                        <i class="fas fa-check" style="margin-right: 0.25rem;"></i>
+                        Passed
+                    </span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.875rem;">
+                    <div>
+                        <span style="color: #9ca3af;">Input:</span>
+                        <div style="background: #111827; padding: 0.5rem; border-radius: 0.25rem; margin-top: 0.25rem;">
+                            [1, 5, 3, 9, 2]
+                        </div>
+                    </div>
+                    <div>
+                        <span style="color: #9ca3af;">Output:</span>
+                        <div style="background: #111827; padding: 0.5rem; border-radius: 0.25rem; margin-top: 0.25rem;">
+                            9
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-case">
+                <div class="test-case-header">
+                    <span class="test-case-title">Test Case 2</span>
+                    <span class="test-case-status status-failed">
+                        <i class="fas fa-times" style="margin-right: 0.25rem;"></i>
+                        Failed
+                    </span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.875rem;">
+                    <div>
+                        <span style="color: #9ca3af;">Input:</span>
+                        <div style="background: #111827; padding: 0.5rem; border-radius: 0.25rem; margin-top: 0.25rem;">
+                            []
+                        </div>
+                    </div>
+                    <div>
+                        <span style="color: #9ca3af;">Error:</span>
+                        <div style="background: #991b1b; padding: 0.5rem; border-radius: 0.25rem; margin-top: 0.25rem; color: #f87171;">
+                            IndexError: list index out of range
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Preview -->
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem; color: #f9fafb;">Live Leaderboard</h2>
+        <div class="card">
+            <div class="card-body" style="padding: 0;">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>College</th>
+                            <th>Solved</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge rank-1">🥇 #1</span></td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: #f9fafb;">CodeWarriors</div>
+                                    <div style="font-size: 0.875rem; color: #9ca3af;">Alice Chen</div>
+                                </div>
+                            </td>
+                            <td>MIT</td>
+                            <td>18</td>
+                            <td style="font-weight: 700; color: #3b82f6;">2,450</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge rank-2">🥈 #2</span></td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: #f9fafb;">BugBusters</div>
+                                    <div style="font-size: 0.875rem; color: #9ca3af;">Bob Smith</div>
+                                </div>
+                            </td>
+                            <td>Stanford</td>
+                            <td>16</td>
+                            <td style="font-weight: 700; color: #3b82f6;">2,200</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge rank-3">🥉 #3</span></td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: #f9fafb;">DebugMasters</div>
+                                    <div style="font-size: 0.875rem; color: #9ca3af;">Carol Davis</div>
+                                </div>
+                            </td>
+                            <td>CMU</td>
+                            <td>15</td>
+                            <td style="font-weight: 700; color: #3b82f6;">1,950</td>
+                        </tr>
+                        <tr>
+                            <td>#4</td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: #f9fafb;">Your Team</div>
+                                    <div style="font-size: 0.875rem; color: #9ca3af;">You</div>
+                                </div>
+                            </td>
+                            <td>Your College</td>
+                            <td>12</td>
+                            <td style="font-weight: 700; color: #3b82f6;">1,600</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="container" style="margin-top: 4rem; padding: 2rem 0; border-top: 1px solid #374151; text-align: center;">
+        <p style="color: #9ca3af; margin-bottom: 1rem;">
+            <i class="fas fa-code" style="margin-right: 0.5rem;"></i>
+            FixIt - Debugging Competition Platform
+        </p>
+        <div style="display: flex; justify-content: center; gap: 2rem; font-size: 0.875rem; color: #6b7280;">
+            <span>🐛 Find Bugs</span>
+            <span>⚡ Real-time</span>
+            <span>🏆 Compete</span>
+            <span>🎯 Learn</span>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate real-time updates
+            setInterval(() => {
+                const scores = document.querySelectorAll('.stat-value');
+                scores.forEach(score => {
+                    if (Math.random() > 0.7) {
+                        const currentValue = parseInt(score.textContent);
+                        if (!isNaN(currentValue)) {
+                            score.textContent = currentValue + Math.floor(Math.random() * 3);
+                        }
+                    }
+                });
+            }, 5000);
+
+            // Add click handlers
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (this.textContent.includes('Solve Now') || this.textContent.includes('Run')) {
+                        e.preventDefault();
+                        alert('This is a preview. In the full application, this would open the problem editor.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

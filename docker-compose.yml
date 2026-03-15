@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: fixit_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: fixit123
+      MONGO_INITDB_DATABASE: fixit_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./backend/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - fixit_network
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7.2-alpine
+    container_name: fixit_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fixit_network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fixit_backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://admin:fixit123@mongodb:27017/fixit_db?authSource=admin
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - code_execution_sandbox:/app/sandbox
+    networks:
+      - fixit_network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: fixit_frontend
+    restart: unless-stopped
+    environment:
+      REACT_APP_API_URL: http://localhost:5000/api
+      REACT_APP_SOCKET_URL: http://localhost:5000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - fixit_network
+
+  # Code Execution Sandbox
+  code-executor:
+    build:
+      context: ./code-executor
+      dockerfile: Dockerfile
+    container_name: fixit_code_executor
+    restart: unless-stopped
+    privileged: true
+    security_opt:
+      - no-new-privileges:true
+    cap_add:
+      - SYS_ADMIN
+    cap_drop:
+      - ALL
+    volumes:
+      - code_execution_sandbox:/tmp/sandbox
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - fixit_network
+
+volumes:
+  mongodb_data:
+  redis_data:
+  code_execution_sandbox:
+
+networks:
+  fixit_network:
+    driver: bridge

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixIt Router Debug Tool</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .btn { padding: 10px 20px; margin: 5px; border: none; cursor: pointer; background: #007bff; color: white; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 FixIt React Router Diagnostic Tool</h1>
+    
+    <div id="results"></div>
+    
+    <div class="info">
+        <h3>📋 How to Use This Tool:</h3>
+        <ol>
+            <li>Open this file in your browser</li>
+            <li>Check the diagnostic results below</li>
+            <li>Follow the recommended fix</li>
+        </ol>
+    </div>
+
+    <script>
+        function diagnoseEnvironment() {
+            const results = document.getElementById('results');
+            let html = '';
+            let issues = [];
+            let warnings = [];
+
+            // Check URL
+            const currentUrl = window.location.href;
+            const isDevServer = currentUrl.includes('localhost:5173') || currentUrl.includes('127.0.0.1:5173');
+            const isStaticFile = currentUrl.startsWith('file://');
+
+            if (isStaticFile) {
+                issues.push('❌ You are opening the HTML file directly (static mode)');
+                issues.push('❌ React Router will NOT work in static mode');
+                html += `<div class="error"><h3>🚫 Critical Issue Found</h3><p>${issues.join('<br>')}</p></div>`;
+            } else if (isDevServer) {
+                html += `<div class="success"><h3>✅ Correct Environment</h3><p>You are running the development server correctly!</p></div>`;
+            } else {
+                warnings.push('⚠️ Unusual URL detected');
+                html += `<div class="warning"><h3>⚠️ Warning</h3><p>${warnings.join('<br>')}</p></div>`;
+            }
+
+            // Check for React
+            const hasReact = typeof window.React !== 'undefined' || document.querySelector('[data-reactroot]');
+            if (hasReact) {
+                html += `<div class="success"><h3>✅ React Detected</h3><p>React is properly loaded.</p></div>`;
+            } else {
+                issues.push('❌ React not detected');
+                html += `<div class="error"><h3>🚫 React Not Found</h3><p>React is not loaded properly.</p></div>`;
+            }
+
+            // Check for React Router
+            const hasRouter = typeof window.ReactRouter !== 'undefined';
+            if (hasRouter) {
+                html += `<div class="success"><h3>✅ React Router Active</h3><p>React Router is initialized.</p></div>`;
+            } else {
+                issues.push('❌ React Router not active');
+                html += `<div class="error"><h3>🚫 React Router Inactive</h3><p>React Router is not working.</p></div>`;
+            }
+
+            // Environment Info
+            html += `<div class="info">
+                <h3>📊 Environment Information:</h3>
+                <pre>Current URL: ${currentUrl}
+Is Dev Server: ${isDevServer ? 'YES ✅' : 'NO ❌'}
+Is Static File: ${isStaticFile ? 'YES ❌' : 'NO ✅'}
+React Loaded: ${hasReact ? 'YES ✅' : 'NO ❌'}
+React Router: ${hasRouter ? 'YES ✅' : 'NO ❌'}</pre>
+            </div>`;
+
+            // Solution
+            if (isStaticFile) {
+                html += `<div class="warning">
+                    <h3>🔧 Solution:</h3>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <h4>Step 1: Open Terminal</h4>
+                        <pre>cd fixit-frontend</pre>
+                        
+                        <h4>Step 2: Install Dependencies</h4>
+                        <pre>npm install</pre>
+                        
+                        <h4>Step 3: Start Development Server</h4>
+                        <pre>npm run dev</pre>
+                        
+                        <h4>Step 4: Open Correct URL</h4>
+                        <pre>http://localhost:5173</pre>
+                        
+                        <h4>Step 5: Test Navigation</h4>
+                        <p>Now your buttons should work! 🎉</p>
+                    </div>
+                </div>`;
+            }
+
+            // Quick Fix Buttons
+            html += `<div class="info">
+                <h3>🚀 Quick Actions:</h3>
+                <button class="btn" onclick="openDevServer()">Open Development Server</button>
+                <button class="btn" onclick="runDiagnostics()">Run Diagnostics Again</button>
+                <button class="btn" onclick="showDetailedInfo()">Show Detailed Info</button>
+            </div>`;
+
+            results.innerHTML = html;
+        }
+
+        function openDevServer() {
+            alert('Please run these commands in your terminal:\n\ncd fixit-frontend\nnpm run dev\n\nThen open: http://localhost:5173');
+        }
+
+        function runDiagnostics() {
+            diagnoseEnvironment();
+        }
+
+        function showDetailedInfo() {
+            const info = `
+Detailed Environment Info:
+========================
+User Agent: ${navigator.userAgent}
+Platform: ${navigator.platform}
+Language: ${navigator.language}
+Cookie Enabled: ${navigator.cookieEnabled}
+Online: ${navigator.onLine}
+
+Window Info:
+===========
+URL: ${window.location.href}
+Protocol: ${window.location.protocol}
+Host: ${window.location.host}
+Port: ${window.location.port}
+Pathname: ${window.location.pathname}
+
+Document Info:
+=============
+Title: ${document.title}
+Ready State: ${document.readyState}
+Cookies: ${document.cookie}
+
+Console Info:
+============
+Console Available: ${typeof console !== 'undefined'}
+Console Log: ${typeof console.log !== 'undefined'}
+            `;
+            alert(info);
+        }
+
+        // Run diagnostics on load
+        document.addEventListener('DOMContentLoaded', diagnoseEnvironment);
+    </script>
+</body>
+</html>
