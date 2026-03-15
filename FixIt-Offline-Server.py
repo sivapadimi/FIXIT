@@ -3084,6 +3084,165 @@ Total Score: **${total_score}**`);
             })
             .catch(err => console.error(err));
         }
+        
+        // ==========================================
+        // ANTI-CHEATING: Copy/Paste Blocking
+        // ==========================================
+        
+        // Function to show warning message
+        function showAntiCheatWarning(action) {
+            // Create a custom warning instead of alert to avoid disrupting contest
+            const warning = document.createElement('div');
+            warning.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #ef4444;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-weight: 500;
+                z-index: 10000;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                animation: slideIn 0.3s ease-out;
+            `;
+            warning.textContent = `${action} are disabled during the contest.`;
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(warning);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                warning.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    if (warning.parentNode) {
+                        warning.parentNode.removeChild(warning);
+                    }
+                    if (style.parentNode) {
+                        style.parentNode.removeChild(style);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Function to check if we're in a coding context
+        function isInCodingContext(element) {
+            // Check if event target is within an editor
+            while (element && element !== document.body) {
+                if (element.classList && element.classList.contains('editor')) {
+                    return true;
+                }
+                element = element.parentNode;
+            }
+            return false;
+        }
+        
+        // Block copy events
+        document.addEventListener('copy', function(e) {
+            if (isInCodingContext(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                showAntiCheatWarning('Copy and Paste');
+                return false;
+            }
+        });
+        
+        // Block paste events
+        document.addEventListener('paste', function(e) {
+            if (isInCodingContext(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                showAntiCheatWarning('Copy and Paste');
+                return false;
+            }
+        });
+        
+        // Block cut events
+        document.addEventListener('cut', function(e) {
+            if (isInCodingContext(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                showAntiCheatWarning('Cut operation');
+                return false;
+            }
+        });
+        
+        // Block right-click context menu
+        document.addEventListener('contextmenu', function(e) {
+            if (isInCodingContext(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+        
+        // Block keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (isInCodingContext(e.target)) {
+                // Block Ctrl+C (Copy)
+                if (e.ctrlKey && (e.key === 'c' || e.key === 'C')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showAntiCheatWarning('Copy disabled during contest');
+                    return false;
+                }
+                
+                // Block Ctrl+V (Paste)
+                if (e.ctrlKey && (e.key === 'v' || e.key === 'V')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showAntiCheatWarning('Paste disabled during contest');
+                    return false;
+                }
+                
+                // Block Ctrl+X (Cut)
+                if (e.ctrlKey && (e.key === 'x' || e.key === 'X')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showAntiCheatWarning('Cut disabled during contest');
+                    return false;
+                }
+                
+                // Allow other keyboard shortcuts for normal typing
+                // Arrow keys, backspace, enter, etc. are not blocked
+            }
+        });
+        
+        // Additional protection: Block drag and drop
+        document.addEventListener('dragstart', function(e) {
+            if (isInCodingContext(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+        
+        document.addEventListener('drop', function(e) {
+            if (isInCodingContext(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+        
+        // Console warning for developers
+        console.log('%c🚫 ANTI-CHEATING SYSTEM ACTIVE', 'color: #ef4444; font-weight: bold; font-size: 14px;');
+        console.log('%cCopy, Paste, Cut, and Right-Click are disabled in coding areas', 'color: #f59e0b; font-size: 12px;');
     </script>
 </body>
 </html>
