@@ -1,8 +1,8 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 # Install compilers
 RUN apt-get update && apt-get install -y \
-    openjdk-17-jdk \
+    default-jdk \
     g++ \
     gcc
 
@@ -15,5 +15,5 @@ COPY . .
 # Install Python dependencies
 RUN pip install -r fixit-backend/requirements.txt
 
-# Start your server
+# Start server
 CMD ["python", "FixIt-Offline-Server.py"]
