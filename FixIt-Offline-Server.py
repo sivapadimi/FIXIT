@@ -3707,7 +3707,7 @@ class FixItHandler(http.server.SimpleHTTPRequestHandler):
                         
                         # Compile Java code
                         compile_result = subprocess.run(
-                            ['javac', code_file],
+                            ['./jdk/bin/javac', code_file],
                             capture_output=True,
                             text=True,
                             timeout=5,
@@ -3725,7 +3725,7 @@ class FixItHandler(http.server.SimpleHTTPRequestHandler):
                         else:
                             # Execute Java code with input
                             result = subprocess.run(
-                                ['java', '-cp', temp_dir, 'Main'],
+                                ['./jdk/bin/java', '-cp', temp_dir, 'Main'],
                                 input=input_data,
                                 text=True,
                                 capture_output=True,
