@@ -161,7 +161,7 @@ class RobustExecutor:
                 # Compile Java code
                 compile_start = time.time()
                 compile_process = subprocess.run(
-                    ['./jdk/bin/javac', code_file],
+                    ['/usr/bin/javac', code_file],
                     capture_output=True,
                     text=True,
                     timeout=self.time_limit,
@@ -182,7 +182,7 @@ class RobustExecutor:
                 
                 # Execute Java code
                 process = subprocess.run(
-                    ['./jdk/bin/java', '-cp', temp_dir, 'Main'],
+                    ['/usr/bin/java', '-cp', temp_dir, 'Main'],
                     input=input_data,
                     text=True,
                     capture_output=True,

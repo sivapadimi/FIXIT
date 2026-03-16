@@ -101,7 +101,7 @@ class CodeExecutor:
                 
                 # Compile Java code
                 compile_result = subprocess.run(
-                    ['./jdk/bin/javac', code_file],
+                    ['/usr/bin/javac', code_file],
                     capture_output=True,
                     text=True,
                     timeout=self.time_limit,
@@ -122,7 +122,7 @@ class CodeExecutor:
                 
                 # Execute Java code
                 result = subprocess.run(
-                    ['./jdk/bin/java', '-cp', temp_dir, 'Main'],
+                    ['/usr/bin/java', '-cp', temp_dir, 'Main'],
                     input=input_data,
                     text=True,
                     capture_output=True,
