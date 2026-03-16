@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: fixit
+    env: python
+    buildCommand: "pip install -r fixit-backend/requirements.txt"
+    startCommand: "python FixIt-Offline-Server.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10
+    aptPackages:
+      - openjdk-17-jdk
